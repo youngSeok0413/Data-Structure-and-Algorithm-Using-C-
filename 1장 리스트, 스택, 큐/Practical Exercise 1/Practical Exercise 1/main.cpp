@@ -43,20 +43,6 @@ public:
 		}
 	}
 
-	void check() {
-		std::cout << "[ ";
-
-		node_ptr ptr = &(this->head);
-		ptr = head.next;
-
-		while (ptr != &(this->tail)) {
-			std::cout << ptr->musics << ", ";
-			ptr = ptr->next;
-		}
-
-		std::cout << "]" << std::endl;
-	}
-
 	void push_back(const std::string& music) {
 		if (head.next == &tail) {
 			node_ptr toPush = new node{ music, &head, &tail };
@@ -68,8 +54,6 @@ public:
 			tail.prev->next = toPush;
 			tail.prev = toPush;
 		}
-
-		check();
 	}
 
 	void push_front(const std::string& music) {
@@ -83,8 +67,6 @@ public:
 			head.next->prev = toPush;
 			head.next = toPush;
 		}
-
-		check();
 	}
 
 	void pop_back() {
@@ -97,8 +79,6 @@ public:
 			tail.prev->next = &tail;
 			delete toPop;
 		}
-
-		check();
 	}
 
 	void pop_front() {
@@ -110,8 +90,6 @@ public:
 			head.next = head.next->next;
 			head.next->prev = &head;
 		}
-
-		check();
 	}
 
 	struct playlist_iterator {
@@ -163,6 +141,21 @@ public:
 		}
 	};
 
+	std::string getMusic(std::string& music) {
+		playlist_iterator iter = this->find(music);
+
+		if (iter == NULL) {
+			std::cout << "Not Found" << std::endl;
+		}
+		else {
+			return *iter;
+		}
+	}
+
+	std::string getMusic(playlist_iterator iter) {
+		return *iter;
+	}
+
 	playlist_iterator begin() {
 		return playlist_iterator(&head);
 	}
@@ -187,7 +180,7 @@ public:
 		else {
 			playlist_iterator iter = this->begin();
 
-			for (int i = -1; i < n; i++)
+			for (int i = 0; i < n+1; i++)
 				iter++;
 
 			this->insert(iter, music);
@@ -205,8 +198,6 @@ public:
 			iter.get()->prev->next = toAdd;
 			iter.get()->prev = toAdd;
 		}
-
-		check();
 	}
 
 	void remove(unsigned int n) {
@@ -221,8 +212,6 @@ public:
 			toRemove->prev->next = toRemove->next;
 			delete toRemove;
 		}
-
-		check();
 	}
 
 	void remove(playlist_iterator iter) {
@@ -236,8 +225,20 @@ public:
 			toRemove->prev->next = toRemove->next;
 			delete toRemove;
 		}
+	}
 
-		check();
+	void play_all() {
+		playlist_iterator iter = ++(this->begin());
+		
+		for (; iter != this->end(); iter++)
+			std::cout << *iter << std::endl;
+	}
+
+	void clear() {
+		playlist_iterator iter = ++(this->begin());
+
+		for (; iter != this->end(); iter++)
+			this->pop_front();
 	}
 
 	size_t size() {
@@ -261,6 +262,8 @@ int main() {
 	list.push_back("Bohemian Rhapsody");
 	list.push_back("Killer Queen");
 	list.push_back("Don't Stop Me Now");
-	list.insert(1, "Judy1");
+	list.play_all();
+	list.clear();
+	list.play_all();
 	return 0;
 }
