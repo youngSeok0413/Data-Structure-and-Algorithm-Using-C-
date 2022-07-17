@@ -164,6 +164,14 @@ public:
 		return playlist_iterator(&tail);
 	}
 
+	playlist_iterator next(playlist_iterator& iter) {
+		return ++iter;
+	}
+
+	playlist_iterator previous(playlist_iterator& iter) {
+		return --iter;
+	}
+
 	playlist_iterator find(std::string music) {
 		for (playlist_iterator iter = this->begin(); iter != this->end(); iter++) {
 			if (iter.get()->musics == music) {
