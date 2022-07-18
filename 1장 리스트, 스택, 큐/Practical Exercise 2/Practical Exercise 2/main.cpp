@@ -21,7 +21,7 @@ private:
 public:
 	Player() {
 		deck = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-		//shuffleDeck();
+		shuffleDeck();
 	}
 
 	int showCard() { return deck.back(); }
@@ -35,8 +35,30 @@ public:
 	}
 
 	void shuffleDeck() {
-		const int sz = (const int)(this->deck.size());
-		int arrayBuffer[sz];
+		int sz = (int)(this->deck.size());
+		int* arr = new int[sz];
+		int i = 0;
+
+		for (std::list<int>::iterator iter = deck.begin(); iter != deck.end(); iter++) {
+			arr[i] = *iter;
+			i++;
+		}
+
+		deck.clear();
+
+		int randomNumber = rand()%sz;
+
+		for (int i = 0; i < sz; i++) {
+			while (arr[randomNumber] == -1) {
+				randomNumber = rand() % sz;
+			}
+
+			deck.push_back(arr[randomNumber]);
+			arr[randomNumber] = -1;
+		}
+
+		delete[] arr;
+
 	}
 
 	bool whetherDeckEmpty() { return deck.empty(); }
