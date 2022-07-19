@@ -1,0 +1,3 @@
+﻿  main.cpp
+D:\GitRepo\Data-Structure-and-Algorithm-Using-C++\Data-Structure-and-Algorithm-Using-C-\2장 트리, 힙, 그래프\Exercise 8\Exercise 8\main.cpp(92,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Exercise 8.vcxproj -> D:\GitRepo\Data-Structure-and-Algorithm-Using-C++\Data-Structure-and-Algorithm-Using-C-\2장 트리, 힙, 그래프\Exercise 8\x64\Debug\Exercise 8.exe
