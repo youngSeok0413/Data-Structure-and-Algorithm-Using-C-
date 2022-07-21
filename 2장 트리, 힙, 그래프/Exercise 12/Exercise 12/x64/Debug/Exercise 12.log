@@ -1,0 +1,5 @@
+﻿  main.cpp
+D:\GitRepo\Data-Structure-and-Algorithm-Using-C++\Data-Structure-and-Algorithm-Using-C-\2장 트리, 힙, 그래프\Exercise 12\Exercise 12\main.cpp(60,17): warning C4834: discarding return value of function with 'nodiscard' attribute
+D:\GitRepo\Data-Structure-and-Algorithm-Using-C++\Data-Structure-and-Algorithm-Using-C-\2장 트리, 힙, 그래프\Exercise 12\Exercise 12\main.cpp(63,17): warning C4834: discarding return value of function with 'nodiscard' attribute
+D:\GitRepo\Data-Structure-and-Algorithm-Using-C++\Data-Structure-and-Algorithm-Using-C-\2장 트리, 힙, 그래프\Exercise 12\Exercise 12\main.cpp(38): warning C4715: 'operator<<': not all control paths return a value
+  Exercise 12.vcxproj -> D:\GitRepo\Data-Structure-and-Algorithm-Using-C++\Data-Structure-and-Algorithm-Using-C-\2장 트리, 힙, 그래프\Exercise 12\x64\Debug\Exercise 12.exe
