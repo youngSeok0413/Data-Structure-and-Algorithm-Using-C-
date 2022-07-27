@@ -2,12 +2,14 @@
 //Making file system using N-tree
 //dir, file move, search, add, delete function needed
 
-//완료된 것 : add ,delete, location change, printAll
+//완료된 것 : add ,delete, location change, printAll, search : 기본적인 기능들은 모두 구현함
 
 #include <string>
 #include <vector>
+#include <stack>
 
 #include <iostream>
+#include <sstream>
 
 enum TYPE : bool{
 	DIR = true,
@@ -36,9 +38,17 @@ public:
 		location = root;
 	}
 
+	~nTree() {
+		Impl_ClearDir(root);
+	}
+
 	//print every dir and file
-	void PrintAll() {
+	void PrintAllFromRoot() {
 		Impl_PrintAll(root);
+	}
+
+	void PrintAllFromLocation() {
+		Impl_PrintAll(location);
 	}
 
 	//add file
@@ -126,8 +136,80 @@ public:
 	}
 
 	//dir에 있는 dir 혹은 파일로
-	void GoToNext(TYPE type, const std::string& name) {
-		Impl_GoToNext(type, name);
+	bool GoToNext(TYPE type, const std::string& name) {
+		return Impl_GoToNext(type, name);
+	}
+
+	//현재 위치 반환
+	std::string GetLocation() {
+		return location->name;
+	}
+
+	//현재 위치 경로 반환(from root)
+	std::string GetLocationPath() {
+		std::stack<std::string> stack;
+		std::string path;
+		node_adr nowLoc = location;
+		
+		while (location != root) {
+			std::string node_name;
+
+			for (int i = 0; i < location->name.size(); i++) {
+				node_name.push_back(location->name[i]);
+			}
+			node_name.push_back('/');
+			stack.push(node_name);
+			location = location->prev;
+		}
+
+		{
+			std::string node_name;
+
+			for (int i = 0; i < location->name.size(); i++) {
+				node_name.push_back(location->name[i]);
+			}
+			node_name.push_back('/');
+			stack.push(node_name);
+		}
+
+		while (!stack.empty()) {
+			std::string str = stack.top();
+
+			for (int i = 0; i < str.size(); i++)
+				path.push_back(str[i]);
+
+			stack.pop();
+		}
+
+		path.pop_back();
+
+		location = nowLoc;
+
+		return path;
+	}
+
+	void goToWhereUserWantToGo(const std::string& userInput) {
+		GoToRoot();
+		std::string roadmap = userInput;
+		std::string togo;
+
+		for (int i = 0; i < roadmap.size(); i++) {
+			if (roadmap[i] == '/') {
+				if (!GoToNext(DIR, togo)) {
+					std::cout << "There is no path" << std::endl;
+					return;
+				}
+				togo.clear();
+			}
+			else {
+				togo.push_back(roadmap[i]);
+			}
+		}
+
+		if (!GoToNext(DIR, togo)) {
+			std::cout << "There is no path" << std::endl;
+			return;
+		}
 	}
 
 private:
@@ -178,24 +260,24 @@ private:
 	}
 
 	//다음 dir 혹은 파일로 이동
-	void Impl_GoToNext(TYPE type, const std::string& name) {
+	bool Impl_GoToNext(TYPE type, const std::string& name) {
 
 		if (!location->type) {
 			std::cout << "Error : Location Error : Location type should be DIR" << std::endl;
-			return;
+			return false;
 		}
 
 		for (int i = 0; i < location->next.size(); i++) {
 			if (location->next[i]->name == name) {
 				if (location->next[i]->type == type) {
-					location = location->next[i];
-					return;
+					location = *(location->next.begin() + i);
+					return true;
 				}
 			}
 		}
 
 		std::cout << "There is no file or dir" << std::endl;
-		return;
+		return false;
 	}
 };
 
@@ -208,7 +290,7 @@ int main() {
 	a.AddFile("newFile1");
 	a.AddFile("newFile2");
 	a.AddFile("newFile3");
-	a.PrintAll();
+	a.PrintAllFromLocation();
 	std::cout << std::endl;
 
 	a.GoToNext(TYPE::DIR ,"newDir1");
@@ -219,7 +301,7 @@ int main() {
 	a.AddFile("newFile12");
 	a.AddFile("newFile13");
 	a.GoToPrevDir();
-	a.PrintAll();
+	a.PrintAllFromLocation();
 	std::cout << std::endl;
 
 	a.GoToNext(TYPE::DIR, "newDir2");
@@ -230,7 +312,7 @@ int main() {
 	a.AddFile("newFile22");
 	a.AddFile("newFile23");
 	a.GoToPrevDir();
-	a.PrintAll();
+	a.PrintAllFromLocation();
 	std::cout << std::endl;
 
 	a.GoToNext(TYPE::DIR, "newDir3");
@@ -240,21 +322,21 @@ int main() {
 	a.AddFile("newFile31");
 	a.AddFile("newFile32");
 	a.AddFile("newFile33");
-	a.GoToPrevDir();
-	a.PrintAll();
+	a.GoToNext(TYPE::DIR, "newDir33");
+	a.AddDir("newDir313");
+	a.AddDir("newDir323");
+	a.AddDir("newDir333");
+	a.AddFile("newFile313");
+	a.AddFile("newFile323");
+	a.AddFile("newFile333");
+	a.GoToRoot();
+	a.PrintAllFromLocation();
 	std::cout << std::endl;
 
-	a.DeleteDir("newDir3");
-	a.PrintAll();
+	a.goToWhereUserWantToGo("newDir3/newDir33");
+	std::cout << a.GetLocationPath() << std::endl;
 	std::cout << std::endl;
-
-	a.DeleteDir("newDir2");
-	a.PrintAll();
-	std::cout << std::endl;
-
-	a.DeleteDir("newDir1");
-	a.PrintAll();
-	std::cout << std::endl;
+	a.PrintAllFromLocation();
 
 	return 0;
 }
