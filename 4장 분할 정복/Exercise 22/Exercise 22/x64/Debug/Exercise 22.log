@@ -1,0 +1,11 @@
+﻿  main.cpp
+D:\SDK\Visual Studio\VC\Tools\MSVC\14.33.31629\include\algorithm(2973,24): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Work\Data-Structure-and-Algorithm-Using-C-\4장 분할 정복\Exercise 22\Exercise 22\main.cpp(16): message : 컴파일되는 함수 템플릿 인스턴스화 '_OutIt std::transform<std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,std::back_insert_iterator<std::vector<_Ty,std::allocator<_Ty>>>,transform_test::<lambda_1>>(const _InIt,const _InIt,_OutIt,_Fn)'에 대한 참조를 확인하세요.
+          with
+          [
+              _OutIt=std::back_insert_iterator<std::vector<int,std::allocator<int>>>,
+              _Ty=int,
+              _InIt=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<int>>>,
+              _Fn=transform_test::<lambda_1>
+          ]
+  Exercise 22.vcxproj -> D:\Work\Data-Structure-and-Algorithm-Using-C-\4장 분할 정복\Exercise 22\x64\Debug\Exercise 22.exe
